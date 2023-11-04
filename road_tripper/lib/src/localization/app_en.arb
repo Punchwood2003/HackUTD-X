@@ -1,0 +1,6 @@
+{
+  "appTitle": "road_tripper",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
