@@ -11,9 +11,9 @@ import org.springframework.context.annotation.PropertySource;
 @Getter
 @Setter
 @PropertySource("classpath:apikeys.properties")
-public class MapsConfig {
-    @Value("${maps.directionsURL}")
-    private String directionsURL;
-    @Value("${apikeys.maps}")
+public class PalmConfig {
+    @Value("${palm.palmURL}")
+    private String palmURL;
+    @Value("${apikeys.palm}")
     private String api_key;
 }

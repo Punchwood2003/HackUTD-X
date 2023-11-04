@@ -22,10 +22,13 @@ public class MapsDao {
         Map<String, String> params = new HashMap<>();
         params.put("origin", src);
         params.put("destination", dst);
+        params.put("key",mapsConfig.getApi_key());
         if (waypoints != null) {
             params.put("waypoints", formatWaypoints(waypoints));
         }
-        return restTemplate.getForObject(mapsConfig.getDirectionsURL() + formatParams(params), String.class);
+        String url = mapsConfig.getDirectionsURL() + "?" + formatParams(params);
+        String response = restTemplate.getForObject(url, String.class);
+        return response;
     }
 
     private String formatWaypoints(List<String> waypoints) {
