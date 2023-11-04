@@ -1,0 +1,5 @@
+spring:
+  config:
+    import: optional:apikeys.yml
+maps:
+  directionsURL: https://maps.googleapis.com/maps/api/directions/json
