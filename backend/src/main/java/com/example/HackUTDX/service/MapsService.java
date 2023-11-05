@@ -22,10 +22,12 @@ public class MapsService {
         GeocodedLocation geocodedSrc = mapsDao.geocode(src);
         GeocodedLocation geocodedDst = mapsDao.geocode(dst);
         List<Map<String, String>> response = palmService.genPOIs(src, dst, pref);
-        List<GeocodedLocation> geocodedLocations = response.stream().map(poi ->
-                mapsDao.geocode(String.format("%s %s, %s",
-                    poi.get("name"), poi.get("city"), poi.get("state")))
-        ).collect(Collectors.toList());
+        List<GeocodedLocation> geocodedLocations = response.stream().map(poi -> {
+            GeocodedLocation loc = mapsDao.geocode(String.format("%s %s, %s",
+                    poi.get("name"), poi.get("city"), poi.get("state")));
+            loc.setName(poi.get("name"));
+            return loc;
+        }).collect(Collectors.toList());
         return filterPOIs(geocodedLocations, geocodedSrc, geocodedDst);
     }
 

@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class GeocodedLocation {
+    private String name;
     private List<AddressComponent> address_components;
     private String formatted_address;
     private Geometry geometry;
