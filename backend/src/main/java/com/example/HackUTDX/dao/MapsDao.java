@@ -2,7 +2,11 @@ package com.example.HackUTDX.dao;
 
 
 import com.example.HackUTDX.config.MapsConfig;
+import com.example.HackUTDX.models.Directions;
+import com.example.HackUTDX.models.GeocodedLocation;
+import com.example.HackUTDX.models.GeocodedLocationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,7 +22,7 @@ public class MapsDao {
     @Autowired
     MapsConfig mapsConfig;
 
-    public String getDirections(String src, String dst, List<String> waypoints) {
+    public Directions getDirections(String src, String dst, List<String> waypoints) {
         Map<String, String> params = new HashMap<>();
         params.put("origin", src);
         params.put("destination", dst);
@@ -27,8 +31,24 @@ public class MapsDao {
             params.put("waypoints", formatWaypoints(waypoints));
         }
         String url = mapsConfig.getDirectionsURL() + "?" + formatParams(params);
-        String response = restTemplate.getForObject(url, String.class);
+        Directions response = restTemplate.getForObject(url, Directions.class);
         return response;
+    }
+
+    @Cacheable("geocodedLoc")
+    public GeocodedLocation geocode(String loc) {
+        Map<String, String> params = new HashMap<>();
+        params.put("key", mapsConfig.getApi_key());
+        params.put("address", loc);
+        String url = mapsConfig.getGeocodeURL() + "?" + formatParams(params);
+        GeocodedLocationResponse response = restTemplate.getForObject(url, GeocodedLocationResponse.class);
+        if (response.getResults().isEmpty()) {
+            response = restTemplate.getForObject(url, GeocodedLocationResponse.class);
+            if (response.getResults().isEmpty()) {
+                return null;
+            }
+        }
+        return response.getResults().get(0);
     }
 
     private String formatWaypoints(List<String> waypoints) {

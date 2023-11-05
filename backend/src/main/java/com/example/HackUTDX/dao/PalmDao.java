@@ -2,6 +2,7 @@ package com.example.HackUTDX.dao;
 
 import com.example.HackUTDX.config.MapsConfig;
 import com.example.HackUTDX.config.PalmConfig;
+import com.example.HackUTDX.models.PalmResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class PalmDao {
     @Autowired
     PalmConfig palmConfig;
 
-    public String getResponse(String src, String dest, String place) {
+    public PalmResponseModel getResponse(String src, String dest, String place) {
         String prompt = "Suppose you are planning a route from " + src + " to " + dest +
                 ". Give me a list of cool " + place + "s on this route." +
                 "Return these" + place + "s as Tuples where each Tuple is formatted as such: " +
@@ -46,7 +47,7 @@ public class PalmDao {
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+        ResponseEntity<PalmResponseModel> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, PalmResponseModel.class);
 
         return responseEntity.getBody();
     }

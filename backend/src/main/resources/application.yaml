@@ -1,4 +1,5 @@
 maps:
   directionsURL: https://maps.googleapis.com/maps/api/directions/json
+  geocodeURL: https://maps.googleapis.com/maps/api/geocode/json
 palm:
   palmURL: https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText
