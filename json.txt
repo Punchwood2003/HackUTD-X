@@ -1,0 +1,1 @@
+{"prompt": {"text": "Write a story about a magic backpack."} }
